@@ -1,0 +1,111 @@
+﻿@model List<BootstrapApp.Models.Course>
+@{
+    ViewData["Title"] = "Курсы";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Каталог курсов</h1>
+
+    <div class="row">
+        @foreach (var course in Model)
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <span class="badge @(course.Level == "Beginner" ? "bg-success" : course.Level == "Intermediate" ? "bg-warning text-dark" : "bg-danger") mb-2">
+                            @course.Level
+                        </span>
+                        <h5 class="card-title">@course.Title</h5>
+                        <p class="card-text text-muted mb-1">
+                            <strong>Преподаватель:</strong> @course.Instructor
+                        </p>
+                        <p class="card-text text-muted mb-1">
+                            <strong>Длительность:</strong> @course.Duration ч.
+                        </p>
+                        <p class="card-text">
+                            <strong class="text-success">@course.Price.ToString("C")</strong>
+                        </p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <button class="btn btn-sm btn-primary w-100"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modal-@course.Id">
+                            Записаться
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <h2 class="mt-5 mb-3">Все курсы</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Преподаватель</th>
+                    <th>Длительность</th>
+                    <th>Цена</th>
+                    <th>Уровень</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in Model)
+                {
+                    <tr>
+                        <td>@course.Id</td>
+                        <td>@course.Title</td>
+                        <td>@course.Instructor</td>
+                        <td>@course.Duration ч.</td>
+                        <td>@course.Price.ToString("C")</td>
+                        <td>
+                            <span class="badge @(course.Level == "Beginner" ? "bg-success" : course.Level == "Intermediate" ? "bg-warning text-dark" : "bg-danger")">
+                                @course.Level
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@foreach (var course in Model)
+{
+    <div class="modal fade" id="modal-@course.Id" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Запись на курс: @course.Title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Преподаватель:</strong> @course.Instructor</p>
+                    <p><strong>Длительность:</strong> @course.Duration ч.</p>
+                    <p><strong>Цена:</strong> @course.Price.ToString("C")</p>
+                    <p>
+                        <strong>Уровень:</strong>
+                        <span class="badge @(course.Level == "Beginner" ? "bg-success" : course.Level == "Intermediate" ? "bg-warning text-dark" : "bg-danger")">
+                            @course.Level
+                        </span>
+                    </p>
+                    <hr />
+                    <div class="mb-3">
+                        <label class="form-label">Ваше имя:</label>
+                        <input type="text" class="form-control" placeholder="Введите имя" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email:</label>
+                        <input type="email" class="form-control" placeholder="email@example.com" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary">Записаться</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
